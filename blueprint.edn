@@ -1,0 +1,12 @@
+[{:itonami.blueprint/id "cloud-itonami-isic-5913"
+  :itonami.blueprint/name "Motion picture, video and television programme distribution activities"
+  :itonami.blueprint/isic-rev4 "5913"
+  :itonami.blueprint/domain :services/motion-picture-video-tv-distribution
+  :itonami.blueprint/license "AGPL-3.0-or-later"
+  :itonami.blueprint/social-impact [:content-access :rights-holder-trust :distribution-transparency :piracy-resilience]
+  :itonami.blueprint/governor :film-distribution-governor
+  :itonami.blueprint/robotics false
+  :itonami.blueprint/required-technologies [:identity :forms :dmn :bpmn :audit-ledger]
+  :itonami.blueprint/status :public-oss
+  :itonami.blueprint/maturity :implemented
+  :db/id -1}]
