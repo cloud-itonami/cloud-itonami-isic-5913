@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>filmdistops operator console</title>
+<style>
+  :root { color-scheme: light dark; }
+  body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+         max-width: 72rem; margin: 2rem auto; padding: 0 1.5rem; line-height: 1.5; }
+  h1 { font-size: 1.5rem; margin-bottom: 0.25rem; }
+  h2 { font-size: 1.1rem; margin-top: 2.5rem; border-bottom: 1px solid #8884; padding-bottom: 0.25rem; }
+  .meta { color: #666; font-size: 0.9rem; }
+  table { width: 100%; border-collapse: collapse; margin-top: 0.75rem; font-size: 0.92rem; }
+  th, td { text-align: left; padding: 0.4rem 0.6rem; border-bottom: 1px solid #8883; vertical-align: top; }
+  th { font-weight: 600; color: #555; }
+  code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 0.88em; }
+  .ok { color: #1a7f37; font-weight: 600; }
+  .warn { color: #9a6700; font-weight: 600; }
+  .err { color: #cf222e; font-weight: 600; }
+  .critical { color: #cf222e; font-weight: 700; text-decoration: underline; }
+  .muted { color: #888; }
+  footer { margin-top: 3rem; padding-top: 1rem; border-top: 1px solid #8884; color: #888; font-size: 0.85rem; }
+  @media (prefers-color-scheme: dark) {
+    body { background: #0d1117; color: #c9d1d9; }
+    th { color: #8b949e; }
+    .meta, footer { color: #8b949e; }
+    .muted { color: #6e7681; }
+  }
+  </style>
+</head>
+<body>
+<h1>filmdistops operator console</h1>
+<p class="meta">ISIC Rev.4 5913 -- motion picture, video and television programme distribution activities. This page is generated at build time by running the real <code>filmdistops.operation</code> langgraph-clj StateGraph (intake -&gt; advise -&gt; govern -&gt; decide -&gt; request-approval -&gt; commit/hold) against a real seeded <code>filmdistops.store</code>, via <code>filmdistops.render-html</code>. Every table below is read back from that real run or the real store -- no invented numbers.</p>
+<h2>Title / contract directory</h2>
+<p class="meta">Every proposal must resolve to a store-verified title record (<code>governor/title-unverified-violations</code>) before it may commit or escalate.</p>
+<table><thead><tr><th>title-id</th><th>name</th><th>registered?</th><th>verified?</th><th>latest ledger status</th></tr></thead><tbody>
+<tr><td><code>title-1</code></td><td>The Long Horizon (feature, 2026)</td><td>yes</td><td>yes</td><td class="err">governor-hold: op-not-allowed</td></tr>
+<tr><td><code>title-2</code></td><td>Late Autumn Signal (TV series, S1)</td><td>yes</td><td>yes</td><td class="ok">committed</td></tr>
+<tr><td><code>title-3</code></td><td>Paper Kites Over Kanda (feature, in intake)</td><td>yes</td><td>no</td><td class="muted">in progress</td></tr>
+</tbody></table>
+<h2>Action gate -- closed op allowlist x rollout phase</h2>
+<p class="meta">Derived from <code>filmdistops.governor/allowed-ops</code>, <code>filmdistops.governor/always-escalate-ops</code> and <code>filmdistops.phase/phases</code>. <code>:flag-rights-concern</code> never auto-commits at any phase -- two independent layers (governor + phase) agree.</p>
+<table><thead><tr><th>op</th><th>always escalates?</th><th>phase 0 (read-only)</th><th>phase 1 (assisted-logging)</th><th>phase 2 (assisted-coordination)</th><th>phase 3 (supervised-auto)</th></tr></thead><tbody>
+<tr><td><code>coordinate-delivery</code></td><td>no</td><td class="muted">disabled</td><td class="muted">disabled</td><td class="warn">escalate</td><td class="ok">auto-commit</td></tr>
+<tr><td><code>flag-rights-concern</code></td><td>yes (governor + phase, permanent)</td><td class="muted">disabled</td><td class="muted">disabled</td><td class="muted">disabled</td><td class="warn">escalate</td></tr>
+<tr><td><code>log-distribution-record</code></td><td>no</td><td class="muted">disabled</td><td class="warn">escalate</td><td class="warn">escalate</td><td class="ok">auto-commit</td></tr>
+<tr><td><code>schedule-release-operation</code></td><td>no</td><td class="muted">disabled</td><td class="muted">disabled</td><td class="warn">escalate</td><td class="ok">auto-commit</td></tr>
+</tbody></table>
+<h2>Demo transactions (this run)</h2>
+<p class="meta">One row per <code>langgraph.graph/run*</code> call this generator actually made against the real actor graph, in call order.</p>
+<table><thead><tr><th>thread</th><th>op</th><th>title-id</th><th>advisor confidence</th><th>outcome</th></tr></thead><tbody>
+<tr><td><code>t1</code></td><td><code>log-distribution-record</code></td><td><code>title-1</code></td><td>0.93</td><td class="ok">committed</td></tr>
+<tr><td><code>t2</code></td><td><code>schedule-release-operation</code></td><td><code>title-2</code></td><td>0.88</td><td class="ok">committed</td></tr>
+<tr><td><code>t3</code></td><td><code>coordinate-delivery</code></td><td><code>title-1</code></td><td>0.90</td><td class="ok">committed</td></tr>
+<tr><td><code>t4</code></td><td><code>flag-rights-concern</code></td><td><code>title-2</code></td><td>0.90</td><td class="ok">approval-granted -&gt; committed</td></tr>
+<tr><td><code>t5</code></td><td><code>log-distribution-record</code></td><td><code>title-99</code></td><td>0.93</td><td class="err">governor-hold: title-unverified -- title-99 は未登録または未検証のタイトル/契約 -- いかなる提案も進められない</td></tr>
+<tr><td><code>t6</code></td><td><code>schedule-release-operation</code></td><td><code>title-1</code></td><td>0.88</td><td class="err">governor-hold: effect-not-propose -- :effect は :propose のみ許可されるが :commit が提案された</td></tr>
+<tr><td><code>t7</code></td><td><code>log-distribution-record</code></td><td><code>title-1</code></td><td>0.93</td><td class="err">governor-hold: scope-excluded -- 権利許諾の付与確定/配給ウィンドウ・地域クリアランスの確定判断に踏み込む提案は永久に禁止</td></tr>
+<tr><td><code>t8</code></td><td><code>coordinate-delivery</code></td><td><code>title-1</code></td><td>0.90</td><td class="err">governor-hold: op-not-allowed -- :direct-rights-grant は許可された操作(closed allowlist)に含まれない</td></tr>
+</tbody></table>
+<h2>Audit ledger (SSoT, append-only)</h2>
+<p class="meta"><code>filmdistops.store/ledger</code> after this run -- written only by the <code>:commit</code> and <code>:hold</code> nodes of <code>filmdistops.operation</code>, never by the advisor.</p>
+<table><thead><tr><th>status</th><th>op</th><th>title-id</th><th>actor</th><th>detail</th></tr></thead><tbody>
+<tr><td class="ok">committed</td><td><code>log-distribution-record</code></td><td><code>title-1</code></td><td>coord-1</td><td>title-1 のディストリビューション記録を記録: (:territory :window)</td></tr>
+<tr><td class="ok">committed</td><td><code>schedule-release-operation</code></td><td><code>title-2</code></td><td>coord-1</td><td>title-2 の公開日程・マーケティングウィンドウ調整を提案: (:release-date :marketing-window)</td></tr>
+<tr><td class="ok">committed</td><td><code>coordinate-delivery</code></td><td><code>title-1</code></td><td>coord-1</td><td>title-1 の配給先納品ハンドオフ調整を提案: (:exhibitor :deliverable :due)</td></tr>
+<tr><td class="ok">committed</td><td><code>flag-rights-concern</code></td><td><code>title-2</code></td><td>coord-1</td><td>title-2 の権利懸念フラグ: &quot;possible territory overlap with an existing SVOD deal&quot;</td></tr>
+<tr><td class="err">governor-hold: title-unverified</td><td><code>log-distribution-record</code></td><td><code>title-99</code></td><td>coord-1</td><td>title-99 は未登録または未検証のタイトル/契約 -- いかなる提案も進められない</td></tr>
+<tr><td class="err">governor-hold: effect-not-propose</td><td><code>schedule-release-operation</code></td><td><code>title-1</code></td><td>coord-1</td><td>:effect は :propose のみ許可されるが :commit が提案された</td></tr>
+<tr><td class="err">governor-hold: scope-excluded</td><td><code>log-distribution-record</code></td><td><code>title-1</code></td><td>coord-1</td><td>権利許諾の付与確定/配給ウィンドウ・地域クリアランスの確定判断に踏み込む提案は永久に禁止</td></tr>
+<tr><td class="err">governor-hold: op-not-allowed</td><td><code>coordinate-delivery</code></td><td><code>title-1</code></td><td>coord-1</td><td>:direct-rights-grant は許可された操作(closed allowlist)に含まれない</td></tr>
+</tbody></table>
+<h2>Committed distribution log</h2>
+<p class="meta"><code>filmdistops.store/distribution-log</code> -- written only by <code>store/commit-record!</code>, called only from the <code>:commit</code> node.</p>
+<table><thead><tr><th>op</th><th>title-id</th><th>payload</th></tr></thead><tbody>
+<tr><td><code>log-distribution-record</code></td><td><code>title-1</code></td><td><code>{:title-id &quot;title-1&quot;, :territory &quot;JP&quot;, :window &quot;theatrical&quot;}</code></td></tr>
+<tr><td><code>schedule-release-operation</code></td><td><code>title-2</code></td><td><code>{:title-id &quot;title-2&quot;, :release-date &quot;2026-09-18&quot;, :marketing-window &quot;6-weeks-pre&quot;}</code></td></tr>
+<tr><td><code>coordinate-delivery</code></td><td><code>title-1</code></td><td><code>{:title-id &quot;title-1&quot;, :exhibitor &quot;Kanda Cinema Group&quot;, :deliverable &quot;DCP&quot;, :due &quot;2026-09-01&quot;}</code></td></tr>
+<tr><td><code>flag-rights-concern</code></td><td><code>title-2</code></td><td><code>{:title-id &quot;title-2&quot;, :concern &quot;possible territory overlap with an existing SVOD deal&quot;, :confidence 0.9, :approved-by &quot;coord-1&quot;}</code></td></tr>
+</tbody></table>
+<footer>Generated by <code>filmdistops.render-html</code> (com-junkawasaki/root ADR-2607189300, flagship checklist item 2) -- driving the real <code>filmdistops.operation</code> / <code>filmdistops.governor</code> / <code>filmdistops.store</code> stack, not a mockup. Regenerated nightly by <code>.github/workflows/regenerate.yml</code> (item 4); commits only when the output changes.</footer>
+</body>
+</html>
