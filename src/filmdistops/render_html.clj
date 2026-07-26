@@ -19,7 +19,8 @@
       `filmdistops.governor/check`, none of which ever reach a human:
       :title-unverified, :effect-not-propose, :scope-excluded,
       :op-not-allowed."
-  (:require [clojure.java.io :as io]
+  (:require [jp-go-dds.skin]
+            [clojure.java.io :as io]
             [clojure.string :as str]
             [filmdistops.store :as store]
             [filmdistops.operation :as op]
@@ -278,7 +279,9 @@
    "<meta charset=\"utf-8\">\n"
    "<meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">\n"
    "<title>filmdistops operator console</title>\n"
-   "<style>" css "</style>\n"
+   "<style>"
+   (jp-go-dds.skin/dds+skin)
+   "</style>\n"
    "</head>\n<body>\n"
    "<h1>filmdistops operator console</h1>\n"
    "<p class=\"meta\">ISIC Rev.4 5913 -- motion picture, video and television programme "
