@@ -21,7 +21,7 @@
       :op-not-allowed."
   (:require [jp-go-dds.skin]
             [clojure.java.io :as io]
-            [clojure.string :as str]
+            [kotoba.lang.text :as str]
             [filmdistops.store :as store]
             [filmdistops.operation :as op]
             [filmdistops.phase :as phase]
