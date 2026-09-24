@@ -1,6 +1,6 @@
 (ns filmdistops.advisor-test
   "Unit tests of `filmdistops.advisor` proposal generation."
-  (:require [clojure.test :refer [deftest is testing]]
+  (:require [kotoba.test :refer [deftest is testing]]
             [filmdistops.advisor :as adv]
             [filmdistops.store :as store]))
 
